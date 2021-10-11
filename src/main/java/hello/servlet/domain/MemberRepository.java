@@ -13,7 +13,6 @@ public class MemberRepository {
 
     private static Map<Long, Member> store = new HashMap<>();
     private static long sequence = 0L;
-
     // 싱글톤으로 구현
     private static final MemberRepository instance = new MemberRepository();
 
@@ -22,8 +21,8 @@ public class MemberRepository {
 
     }
 
+    // 싱글톤으로 만들어주기위한 생성자 접근제어자 private 설정
     private MemberRepository() {
-
     }
 
     public Member save(Member member) {
