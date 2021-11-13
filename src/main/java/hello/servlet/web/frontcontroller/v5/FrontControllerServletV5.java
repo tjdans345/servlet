@@ -1,6 +1,7 @@
 package hello.servlet.web.frontcontroller.v5;
 
-import hello.servlet.web.frontcontroller.v3.ControllerV3;
+import hello.servlet.web.frontcontroller.ModelView;
+import hello.servlet.web.frontcontroller.MyView;
 import hello.servlet.web.frontcontroller.v3.MemberFormControllerV3;
 import hello.servlet.web.frontcontroller.v3.controller.MemberListControllerV3;
 import hello.servlet.web.frontcontroller.v3.controller.MemberSaveControllerV3;
@@ -50,20 +51,34 @@ public class FrontControllerServletV5 extends HttpServlet {
             return;
         }
 
+        MyHandlerAdapter adapter = getHandlerAdapter(handler);
+
+        ModelView mv = adapter.handle(request, response, handler);
+
+        String viewName = mv.getViewName();
+        MyView view = viewResolver(viewName);
+
+        view.render(mv.getModel(), request, response);
+
+    }
+
+    private MyHandlerAdapter getHandlerAdapter(Object handler) {
         MyHandlerAdapter a;
         for (MyHandlerAdapter adapter : handlerAdapters) {
             if(adapter.supports(handler)) {
-                a = adapter;
+                return adapter;
             }
         }
 
-
-
-
+        throw new IllegalArgumentException("handler adapter를 찾을 수 없습니다. handler = " + handler);
     }
 
     private Object getHandler(HttpServletRequest request) {
         String requestURI = request.getRequestURI();
         return handlerMapingMap.get(requestURI);
+    }
+
+    private MyView viewResolver(String viewName) {
+        return new MyView("/WEB-INF/views" + viewName);
     }
 }
