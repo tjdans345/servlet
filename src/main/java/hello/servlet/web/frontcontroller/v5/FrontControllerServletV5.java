@@ -5,7 +5,11 @@ import hello.servlet.web.frontcontroller.MyView;
 import hello.servlet.web.frontcontroller.v3.MemberFormControllerV3;
 import hello.servlet.web.frontcontroller.v3.controller.MemberListControllerV3;
 import hello.servlet.web.frontcontroller.v3.controller.MemberSaveControllerV3;
+import hello.servlet.web.frontcontroller.v4.controller.MemberFormControllerV4;
+import hello.servlet.web.frontcontroller.v4.controller.MemberListControllerV4;
+import hello.servlet.web.frontcontroller.v4.controller.MemberSaveControllerV4;
 import hello.servlet.web.frontcontroller.v5.adpater.ControllerV3HandlerAdapter;
+import hello.servlet.web.frontcontroller.v5.adpater.ControllerV4HandlerAdapter;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -21,7 +25,7 @@ import java.util.Map;
 @WebServlet(name = "frontControllerServletV5", urlPatterns = "/front-controller/v5/*")
 public class FrontControllerServletV5 extends HttpServlet {
 
-    private final Map<String, Object> handlerMapingMap = new HashMap<>();
+    private final Map<String, Object> handlerMappingMap = new HashMap<>();
     private final List<MyHandlerAdapter> handlerAdapters = new ArrayList<>();
 
     public FrontControllerServletV5() {
@@ -32,13 +36,18 @@ public class FrontControllerServletV5 extends HttpServlet {
 
     // extractedMethod 로 추출할때는 순서대로 만드는 것이 좋다.
     private void initHandlerMappingMap() {
-        handlerMapingMap.put("/front-controller/v3/members/new-form", new MemberFormControllerV3());
-        handlerMapingMap.put("/front-controller/v3/members/save", new MemberSaveControllerV3());
-        handlerMapingMap.put("/front-controller/v3/members", new MemberListControllerV3());
+        handlerMappingMap.put("/front-controller/v5/v3/members/new-form", new MemberFormControllerV3());
+        handlerMappingMap.put("/front-controller/v5/v3/members/save", new MemberSaveControllerV3());
+        handlerMappingMap.put("/front-controller/v5/v3/members", new MemberListControllerV3());
+        // V4 추가
+        handlerMappingMap.put("/front-controller/v5/v4/members/new-form", new MemberFormControllerV4());
+        handlerMappingMap.put("/front-controller/v5/v4/members/save", new MemberSaveControllerV4());
+        handlerMappingMap.put("/front-controller/v5/v4/members", new MemberListControllerV4());
     }
 
     private void initHandlerAdapters() {
         handlerAdapters.add(new ControllerV3HandlerAdapter());
+        handlerAdapters.add(new ControllerV4HandlerAdapter());
     }
 
     @Override
@@ -63,7 +72,6 @@ public class FrontControllerServletV5 extends HttpServlet {
     }
 
     private MyHandlerAdapter getHandlerAdapter(Object handler) {
-        MyHandlerAdapter a;
         for (MyHandlerAdapter adapter : handlerAdapters) {
             if(adapter.supports(handler)) {
                 return adapter;
@@ -75,10 +83,10 @@ public class FrontControllerServletV5 extends HttpServlet {
 
     private Object getHandler(HttpServletRequest request) {
         String requestURI = request.getRequestURI();
-        return handlerMapingMap.get(requestURI);
+        return handlerMappingMap.get(requestURI);
     }
 
     private MyView viewResolver(String viewName) {
-        return new MyView("/WEB-INF/views" + viewName);
+        return new MyView("/WEB-INF/views/" + viewName + ".jsp");
     }
 }
