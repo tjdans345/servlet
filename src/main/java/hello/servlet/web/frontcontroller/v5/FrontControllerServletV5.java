@@ -39,6 +39,7 @@ public class FrontControllerServletV5 extends HttpServlet {
         handlerMappingMap.put("/front-controller/v5/v3/members/new-form", new MemberFormControllerV3());
         handlerMappingMap.put("/front-controller/v5/v3/members/save", new MemberSaveControllerV3());
         handlerMappingMap.put("/front-controller/v5/v3/members", new MemberListControllerV3());
+
         // V4 추가
         handlerMappingMap.put("/front-controller/v5/v4/members/new-form", new MemberFormControllerV4());
         handlerMappingMap.put("/front-controller/v5/v4/members/save", new MemberSaveControllerV4());
@@ -61,14 +62,10 @@ public class FrontControllerServletV5 extends HttpServlet {
         }
 
         MyHandlerAdapter adapter = getHandlerAdapter(handler);
-
         ModelView mv = adapter.handle(request, response, handler);
-
         String viewName = mv.getViewName();
         MyView view = viewResolver(viewName);
-
         view.render(mv.getModel(), request, response);
-
     }
 
     private MyHandlerAdapter getHandlerAdapter(Object handler) {
@@ -77,7 +74,6 @@ public class FrontControllerServletV5 extends HttpServlet {
                 return adapter;
             }
         }
-
         throw new IllegalArgumentException("handler adapter를 찾을 수 없습니다. handler = " + handler);
     }
 
