@@ -34,6 +34,7 @@ public class FrontControllerServletV5 extends HttpServlet {
         initHandlerAdapters();
     }
 
+
     // extractedMethod 로 추출할때는 순서대로 만드는 것이 좋다.
     private void initHandlerMappingMap() {
         handlerMappingMap.put("/front-controller/v5/v3/members/new-form", new MemberFormControllerV3());
@@ -51,6 +52,13 @@ public class FrontControllerServletV5 extends HttpServlet {
         handlerAdapters.add(new ControllerV4HandlerAdapter());
     }
 
+    /**
+     *
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException
+     */
     @Override
     protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 

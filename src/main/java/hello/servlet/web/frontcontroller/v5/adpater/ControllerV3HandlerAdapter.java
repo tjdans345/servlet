@@ -24,6 +24,15 @@ public class ControllerV3HandlerAdapter implements MyHandlerAdapter {
         return (handler instanceof ControllerV3);
     }
 
+    /**
+     *
+     * @param request
+     * @param response
+     * @param handler
+     * @return ModelView
+     * @throws ServletException
+     * @throws IOException
+     */
     @Override
     public ModelView handle(HttpServletRequest request, HttpServletResponse response, Object handler) throws ServletException, IOException {
         ControllerV3 controller = (ControllerV3) handler;
@@ -32,6 +41,11 @@ public class ControllerV3HandlerAdapter implements MyHandlerAdapter {
         return mv;
     }
 
+    /**
+     *
+     * @param request
+     * @return Map
+     */
     private Map<String, String> createParamMap(HttpServletRequest request) {
         Map<String, String> paramMap = new HashMap<>();
         request.getParameterNames().asIterator()

@@ -13,11 +13,25 @@ import java.util.Map;
 
 public class ControllerV4HandlerAdapter implements MyHandlerAdapter {
 
+    /**
+     *
+     * @param handler
+     * @return boolean
+     */
     @Override
     public boolean supports(Object handler) {
         return (handler instanceof ControllerV4);
     }
 
+    /**
+     *
+     * @param request
+     * @param response
+     * @param handler
+     * @return ModelView
+     * @throws ServletException
+     * @throws IOException
+     */
     @Override
     public ModelView handle(HttpServletRequest request, HttpServletResponse response, Object handler) throws ServletException, IOException {
         ControllerV4 controller = (ControllerV4) handler;
@@ -25,13 +39,17 @@ public class ControllerV4HandlerAdapter implements MyHandlerAdapter {
         Map<String, String > paramMap = createParamMap(request);
         HashMap<String, Object> model = new HashMap<>();
         String viewName = controller.process(paramMap, model);
-
         ModelView mv = new ModelView(viewName);
         mv.setModel(model);
 
         return mv;
     }
 
+    /**
+     *
+     * @param request
+     * @return Map
+     */
     private Map<String, String> createParamMap(HttpServletRequest request) {
         Map<String, String> paramMap = new HashMap<>();
         request.getParameterNames().asIterator()

@@ -13,8 +13,8 @@
 
 <%--    프로퍼티 접근법--%>
     <li>id=${member.id}</li>
-    <li>id=${member.username}</li>
-    <li>id=${member.age}</li>
+    <li>name=${member.username}</li>
+    <li>age=${member.age}</li>
 </ul>
 <a href="/index.html">메인</a>
 </body>
